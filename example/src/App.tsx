@@ -1,18 +1,31 @@
+/* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 
-import { StyleSheet, View, Text } from 'react-native';
-import { multiply } from 'react-native-theme-switch-animation';
+import { StyleSheet, View, Button } from 'react-native';
+import useThemeSwitcher from 'react-native-theme-switch-animation';
 
 export default function App() {
-  const [result, setResult] = React.useState<number | undefined>();
+  const [theme, setTheme] = React.useState('light');
 
-  React.useEffect(() => {
-    multiply(3, 7).then(setResult);
-  }, []);
+  const { switchTheme } = useThemeSwitcher();
 
   return (
-    <View style={styles.container}>
-      <Text>Result: {result}</Text>
+    <View
+      style={{
+        ...styles.container,
+        backgroundColor: theme === 'light' ? 'white' : 'black',
+      }}
+    >
+      <Button
+        title="Switch Theme"
+        onPress={() => {
+          switchTheme({
+            switchThemeFunction: () => {
+              setTheme(theme === 'light' ? 'dark' : 'light');
+            },
+          });
+        }}
+      />
     </View>
   );
 }
