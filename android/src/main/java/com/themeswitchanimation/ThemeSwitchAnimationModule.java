@@ -131,7 +131,6 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
 
     Animator anim = ViewAnimationUtils.createCircularReveal(overlay, cx, cy, finalRadius, 0);
     anim.setDuration(1000);
-    anim.setStartDelay(400);
     anim.addListener(new AnimatorListenerAdapter() {
       @Override
       public void onAnimationEnd(Animator animation) {
