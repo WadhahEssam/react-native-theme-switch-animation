@@ -23,7 +23,6 @@ RCT_EXPORT_METHOD(freezeScreen)
             UIImage *capturedScreen = [self captureScreen];
             self->isAnimating = YES;
             [self displayCapturedImageFullScreen:capturedScreen];
-            // Check for listeners before sending the event
             [self triggerEvent];
         });
     }
@@ -39,11 +38,6 @@ RCT_EXPORT_METHOD(freezeScreen)
     fullScreenImageView.contentMode = UIViewContentModeScaleAspectFill;
     fullScreenImageView.tag = 100;  // optional, if you want to remove it later by tag
     overlayView = fullScreenImageView;
-    
-    //    // Add Gesture to remove fullscreen view when tapped
-    //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(removeFullScreenImage:)];
-    //    [fullScreenImageView addGestureRecognizer:tapGesture];
-    //    fullScreenImageView.userInteractionEnabled = YES;
     
     [[UIApplication sharedApplication].keyWindow addSubview:fullScreenImageView];
 }
@@ -61,8 +55,6 @@ RCT_EXPORT_METHOD(freezeScreen)
 
 RCT_EXPORT_METHOD(unfreezeScreen)
 {
-    NSLog(@"UNFREEZING");
-    
     if (isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
             [self removeFullScreenImage];
@@ -71,7 +63,6 @@ RCT_EXPORT_METHOD(unfreezeScreen)
 }
 
 - (void)removeFullScreenImage {
-    NSLog(@"TEST HERE");
     [UIView animateWithDuration:0.5
                      animations:^{
         self->overlayView.alpha = 0.0;
