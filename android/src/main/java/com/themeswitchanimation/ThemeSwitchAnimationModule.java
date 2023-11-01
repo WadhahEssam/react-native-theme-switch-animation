@@ -22,7 +22,7 @@ import com.facebook.react.modules.core.DeviceEventManagerModule;
 import javax.annotation.Nullable;
 
 public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
-  private static final String TAG = "ThemeSwitchAnimation";
+  private static final String TAG = "ThemeSwitchAnimationModule";
   private ReactContext reactContext;
   private ViewGroup rootView;
   private ImageView fullScreenImageOverlay;
@@ -45,12 +45,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
     System.out.println(isAnimating + " is Animating");
     if (!this.isAnimating) {
       System.out.println("switching");
-      freezeScreenLocal(new Runnable() {
-        @Override
-        public void run() {
-          System.out.println("running");
-        }
-      });
+      freezeScreenLocal();
     }
   }
 
@@ -71,7 +66,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   }
 
 
-  private void freezeScreenLocal(Runnable runnable) {
+  private void freezeScreenLocal() {
     this.isAnimating = true;
     this.rootView = (ViewGroup) getCurrentActivity().getWindow().getDecorView();
 
@@ -93,8 +88,6 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
       @Override
       public void run() {
         rootView.addView(wrapper);
-        runnable.run();
-
         ReactApplicationContext context = getReactApplicationContext();
         sendEvent(context, "FINISHED_FREEZING_SCREEN", null);
       }
@@ -161,6 +154,16 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
 
     // Start the animation
     fadeOut.start();
+  }
+
+  @ReactMethod
+  public void addListener(String eventName) {
+
+  }
+
+  @ReactMethod
+  public void removeListeners(Integer count) {
+
   }
 
 }

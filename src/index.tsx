@@ -1,4 +1,4 @@
-import { NativeModules, Platform, DeviceEventEmitter } from 'react-native';
+import { NativeModules, Platform, NativeEventEmitter } from 'react-native';
 import { useEffect, useRef } from 'react';
 
 const LINKING_ERROR =
@@ -7,8 +7,8 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimation
-  ? NativeModules.ThemeSwitchAnimation
+const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
+  ? NativeModules.ThemeSwitchAnimationModule
   : new Proxy(
       {},
       {
@@ -28,19 +28,20 @@ const useThemeSwitcher = () => {
   });
 
   useEffect(() => {
-    const subscription = DeviceEventEmitter.addListener(
-      'FINISHED_FREEZING_SCREEN',
-      () => {
-        setTimeout(() => {
-          if (switchFunctionRef.current) {
-            switchFunctionRef.current();
-          }
-          ThemeSwitchAnimation.unfreezeScreen();
-        }, 20);
-      }
-    );
+    const subscription = new NativeEventEmitter(
+      NativeModules.ThemeSwitchAnimationModule
+    ).addListener('FINISHED_FREEZING_SCREEN', () => {
+      setTimeout(() => {
+        if (switchFunctionRef.current) {
+          switchFunctionRef.current();
+        }
+        ThemeSwitchAnimation.unfreezeScreen();
+      }, 20);
+    });
+    console.log('registered listener');
 
     return () => {
+      console.log('unregistered listener');
       subscription.remove();
     };
   }, []);
