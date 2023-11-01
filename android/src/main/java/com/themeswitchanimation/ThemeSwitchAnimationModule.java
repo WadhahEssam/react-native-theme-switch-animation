@@ -139,7 +139,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   private void performFadeAnimation(final ImageView overlay) {
     // Create an ObjectAnimator that animates the 'alpha' property of overlay
     ObjectAnimator fadeOut = ObjectAnimator.ofFloat(overlay, "alpha", 1f, 0f);
-    fadeOut.setDuration(1000);
+    fadeOut.setDuration(500);
 
     // Set an AnimatorListener to hide the overlay and update the state when the animation ends
     fadeOut.addListener(new AnimatorListenerAdapter() {

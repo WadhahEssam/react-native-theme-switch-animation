@@ -62,10 +62,9 @@ RCT_EXPORT_METHOD(freezeScreen)
 RCT_EXPORT_METHOD(unfreezeScreen)
 {
     NSLog(@"UNFREEZING");
-
+    
     if (isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
-            self->isAnimating = NO;
             [self removeFullScreenImage];
         });
     }
@@ -73,11 +72,12 @@ RCT_EXPORT_METHOD(unfreezeScreen)
 
 - (void)removeFullScreenImage {
     NSLog(@"TEST HERE");
-    [UIView animateWithDuration:1.0
+    [UIView animateWithDuration:0.5
                      animations:^{
         self->overlayView.alpha = 0.0;
     }
                      completion:^(BOOL finished){
+        self->isAnimating = NO;
         [self->overlayView removeFromSuperview];
     }];
 }
