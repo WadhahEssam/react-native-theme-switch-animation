@@ -2,6 +2,7 @@ package com.themeswitchanimation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.util.Log;
@@ -63,7 +64,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
       @Override
       public void run() {
         if (isAnimating) {
-          performCircleAnimation(fullScreenImageOverlay);
+          performFadeAnimation(fullScreenImageOverlay);
         }
       }
     });
@@ -140,6 +141,26 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
       }
     });
     anim.start();
+  }
+
+  private void performFadeAnimation(final ImageView overlay) {
+    // Create an ObjectAnimator that animates the 'alpha' property of overlay
+    ObjectAnimator fadeOut = ObjectAnimator.ofFloat(overlay, "alpha", 1f, 0f);
+    fadeOut.setDuration(1000);
+
+    // Set an AnimatorListener to hide the overlay and update the state when the animation ends
+    fadeOut.addListener(new AnimatorListenerAdapter() {
+      @Override
+      public void onAnimationEnd(Animator animation) {
+        super.onAnimationEnd(animation);
+        overlay.setVisibility(View.GONE);
+        isAnimating = false;
+        // Update any other state variables, e.g., isAnimating = false;
+      }
+    });
+
+    // Start the animation
+    fadeOut.start();
   }
 
 }
