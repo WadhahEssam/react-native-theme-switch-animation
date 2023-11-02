@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -25,7 +26,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   private static final String TAG = "ThemeSwitchAnimationModule";
   private ReactContext reactContext;
   private ViewGroup rootView;
-  private ImageView fullScreenImageOverlay;
+  private ImageView capturedImageView;
   private boolean isAnimating = false;
 
   public ThemeSwitchAnimationModule(ReactApplicationContext reactContext) {
@@ -38,28 +39,20 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
     return TAG;
   }
 
-  @SuppressLint("LongLogTag")
   @ReactMethod
   public void freezeScreen() {
-    Log.d(TAG, "freezeScreen: Freezing");
-    System.out.println(isAnimating + " is Animating");
     if (!this.isAnimating) {
-      System.out.println("switching");
       freezeScreenLocal();
     }
   }
 
-  @SuppressLint("LongLogTag")
   @ReactMethod
   public void unfreezeScreen() {
-    Log.d(TAG, "freezeScreen: UNFreezing");
-    System.out.println(isAnimating + " is Animating");
-
     reactContext.runOnUiQueueThread(new Runnable() {
       @Override
       public void run() {
         if (isAnimating) {
-          performFadeAnimation(fullScreenImageOverlay);
+          performFadeAnimation(capturedImageView);
         }
       }
     });
@@ -69,20 +62,11 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   private void freezeScreenLocal() {
     this.isAnimating = true;
     this.rootView = (ViewGroup) getCurrentActivity().getWindow().getDecorView();
+    this.capturedImageView = captureScreenshot(this.rootView);
 
     LinearLayout wrapper = new LinearLayout(this.reactContext);
-    wrapper.setOrientation(LinearLayout.VERTICAL);
     wrapper.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT));
-
-    ImageView fullScreenImageOverlay = new ImageView(this.reactContext);
-    this.fullScreenImageOverlay = fullScreenImageOverlay;
-    LinearLayout.LayoutParams fullScreenImageOverlayLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
-    fullScreenImageOverlay.setLayoutParams(fullScreenImageOverlayLP);
-    Bitmap screenshot = captureScreenshot();
-    fullScreenImageOverlay.setImageBitmap(screenshot);
-    fullScreenImageOverlay.setVisibility(View.VISIBLE);
-
-    wrapper.addView(fullScreenImageOverlay);
+    wrapper.addView(capturedImageView);
 
     reactContext.runOnUiQueueThread(new Runnable() {
       @Override
@@ -102,20 +86,18 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   }
 
 
-  private Bitmap captureScreenshot() {
-    rootView.setDrawingCacheEnabled(true);
-    Bitmap bitmap = Bitmap.createBitmap(rootView.getDrawingCache());
-    rootView.setDrawingCacheEnabled(false);
-    int statusBarHeight = 0;
+  private ImageView captureScreenshot(View rootView) {
+    Bitmap capturedImageBitmap = Bitmap.createBitmap(rootView.getWidth(), rootView.getHeight(), Bitmap.Config.ARGB_8888);
+    Canvas canvas = new Canvas(capturedImageBitmap);
+    rootView.draw(canvas);
 
-    // Get the navigation bar height
-    int navigationBarHeight = 0;
+    ImageView capturedImageView = new ImageView(this.reactContext);
+    LinearLayout.LayoutParams fullScreenImageOverlayLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+    capturedImageView.setLayoutParams(fullScreenImageOverlayLP);
+    capturedImageView.setImageBitmap(capturedImageBitmap);
+    capturedImageView.setVisibility(View.VISIBLE);
 
-    // Determine the height of the app content
-    int contentHeight = bitmap.getHeight() - statusBarHeight - navigationBarHeight;
-
-    // Crop the bitmap to include only the app content
-    return Bitmap.createBitmap(bitmap, 0, statusBarHeight, bitmap.getWidth(), contentHeight);
+    return capturedImageView;
   }
 
   private void performCircleAnimation(final ImageView overlay) {
@@ -129,7 +111,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
       @Override
       public void onAnimationEnd(Animator animation) {
         super.onAnimationEnd(animation);
-        fullScreenImageOverlay.setVisibility(View.GONE);
+        capturedImageView.setVisibility(View.GONE);
         isAnimating = false;
       }
     });
