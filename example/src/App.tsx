@@ -23,6 +23,10 @@ export default function App() {
             switchThemeFunction: () => {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
+            animationConfig: {
+              type: 'circular-inverted',
+              duration: 400,
+            },
           });
         }}
       />
