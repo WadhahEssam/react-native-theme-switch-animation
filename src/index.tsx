@@ -18,10 +18,19 @@ const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
       }
     );
 
-type AnimationConfig = {
-  type: 'fade' | 'circular' | 'circular-inverted';
+type CircularAnimationConfig = {
+  type: 'circular' | 'circular-inverted';
+  duration: number;
+  cxRation: number;
+  cyRation: number;
+};
+
+type FadeAnimationConfig = {
+  type: 'fade';
   duration: number;
 };
+
+type AnimationConfig = CircularAnimationConfig | FadeAnimationConfig;
 
 type ThemeSwitcherHookProps = {
   switchThemeFunction: () => void;
@@ -36,7 +45,7 @@ const useThemeSwitcher = () => {
   const [localAnimationConfig, setLocalAnimationConfig] =
     useState<AnimationConfig>({
       type: 'fade',
-      duration: 5000,
+      duration: 500,
     });
 
   useEffect(() => {
@@ -49,7 +58,9 @@ const useThemeSwitcher = () => {
         }
         ThemeSwitchAnimation.unfreezeScreen(
           localAnimationConfig.type,
-          localAnimationConfig.duration
+          localAnimationConfig.duration,
+          (localAnimationConfig as CircularAnimationConfig).cxRation || 0.5,
+          (localAnimationConfig as CircularAnimationConfig).cyRation || 0.5
         );
       }, 20);
     });

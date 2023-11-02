@@ -12,9 +12,9 @@ import com.facebook.react.bridge.ReactContext;
 
 public class Animations {
 
-  public static void performCircleAnimation(ImageView overlay, View rootView, long duration, Runnable callback) {
-    int cx = rootView.getWidth() / 2;
-    int cy = rootView.getHeight() / 2;
+  public static void performCircleAnimation(ImageView overlay, View rootView, long duration, float cxRatio, float cyRatio, Runnable callback) {
+    int cx = (int) (rootView.getWidth() * cxRatio);
+    int cy = (int) (rootView.getHeight() * cyRatio);
     float finalRadius = Math.max(rootView.getWidth(), rootView.getHeight());
     Animator anim = ViewAnimationUtils.createCircularReveal(overlay, cx, cy, finalRadius, 0);
     anim.setDuration(duration);
@@ -29,7 +29,7 @@ public class Animations {
     anim.start();
   }
 
-  public static void performInvertedCircleAnimation(ImageView overlay, ViewGroup rootView, long duration, ReactContext reactContext, Runnable callback) {
+  public static void performInvertedCircleAnimation(ImageView overlay, ViewGroup rootView, long duration, float cxRatio, float cyRatio, ReactContext reactContext, Runnable callback) {
     rootView.postOnAnimation(new Runnable() {
       private int frameCount = 0;
 
@@ -52,11 +52,12 @@ public class Animations {
 
             int width = rootView.getWidth();
             int height = rootView.getHeight();
-            float diagonal = (float) Math.sqrt((width * width) + (height * height));
-            int cx = width / 2;
-            int cy = height / 2;
 
-            Animator anim = ViewAnimationUtils.createCircularReveal(capturedImageAfterSwitching, cx, cy, 0, diagonal / 2);
+            int cx = (int) (width * cxRatio);
+            int cy = (int) (height * cyRatio);
+            float finalRadius = Math.max(rootView.getWidth(), rootView.getHeight());
+
+            Animator anim = ViewAnimationUtils.createCircularReveal(capturedImageAfterSwitching, cx, cy, 0,finalRadius );
             anim.setDuration(duration);
             anim.addListener(new AnimatorListenerAdapter() {
               @Override

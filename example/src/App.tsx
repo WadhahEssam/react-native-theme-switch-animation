@@ -26,6 +26,8 @@ export default function App() {
             animationConfig: {
               type: 'circular-inverted',
               duration: 400,
+              cxRation: 0.5,
+              cyRation: 0.5,
             },
           });
         }}

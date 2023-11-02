@@ -51,14 +51,14 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void unfreezeScreen(String animationType, int duration) {
+  public void unfreezeScreen(String animationType, int duration, float cxRatio, float cyRatio) {
     reactContext.runOnUiQueueThread(new Runnable() {
       @Override
       public void run() {
         if (isAnimating) {
           switch (animationType) {
             case "circular":
-              Animations.performCircleAnimation(capturedImageView, rootView, duration, new Runnable() {
+              Animations.performCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, new Runnable() {
                 @Override
                 public void run() {
                   isAnimating = false;
@@ -66,7 +66,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               });
               break;
             case "circular-inverted":
-              Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, reactContext, new Runnable() {
+              Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, reactContext, new Runnable() {
                 @Override
                 public void run() {
                   isAnimating = false;
