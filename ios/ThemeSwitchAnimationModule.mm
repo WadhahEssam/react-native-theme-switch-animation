@@ -73,7 +73,7 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
 }
 
 - (void)performFadeAnimation: (NSInteger) duration  callback: (void (^)(void))callback {
-    [UIView animateWithDuration: duration / 1000
+    [UIView animateWithDuration: duration / 1000.0
                      animations:^{
         self->overlayView.alpha = 0.0;
     }
@@ -88,7 +88,7 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
 
 
 - (void)performCircularAnimation:(UIView *)overlayView
-                        duration:(CFTimeInterval)duration
+                        duration:(NSInteger)duration
                          cxRatio:(CGFloat)cxRatio
                          cyRatio:(CGFloat)cyRatio
                         callback:(void (^)(void))callback {
@@ -121,8 +121,7 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
         CABasicAnimation *maskLayerAnimation = [CABasicAnimation animationWithKeyPath:@"path"];
         maskLayerAnimation.fromValue = (__bridge id)(startPath.CGPath);
         maskLayerAnimation.toValue = (__bridge id)(endPath.CGPath);
-        
-        maskLayerAnimation.duration = duration / 1000;
+        maskLayerAnimation.duration = duration / 1000.0;
         maskLayerAnimation.delegate = self;
         maskLayerAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
         maskLayerAnimation.fillMode = kCAFillModeForwards;
@@ -168,7 +167,7 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
     maskLayerAnimation.fromValue = (__bridge id)(startPath.CGPath);
     maskLayerAnimation.toValue = (__bridge id)(endPath.CGPath);
     
-    maskLayerAnimation.duration = duration / 1000;
+    maskLayerAnimation.duration = duration / 1000.0;
     maskLayerAnimation.delegate = self;
     maskLayerAnimation.timingFunction = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
     maskLayerAnimation.fillMode = kCAFillModeForwards;
