@@ -24,8 +24,6 @@ export default function App() {
             animationConfig: {
               type: 'fade',
               duration: 900,
-              cyRatio: -0.5,
-              cxRatio: -0.9,
             },
           });
         }}
