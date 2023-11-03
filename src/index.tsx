@@ -4,7 +4,6 @@ import {
   NativeEventEmitter,
   Dimensions,
 } from 'react-native';
-import { useEffect, useRef } from 'react';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -56,47 +55,35 @@ type ThemeSwitcherHookProps = {
   animationConfig?: AnimationConfig;
 };
 
-const useThemeSwitcher = () => {
-  const switchFunctionRef = useRef(() => {
-    return;
-  });
-  const localAnimationConfigRef = useRef<AnimationConfig>({
-    type: 'fade',
-    duration: 500,
-  });
+let switchFunction: () => void = () => {};
+let localAnimationConfig: AnimationConfig = {
+  type: 'fade',
+  duration: 500,
+};
 
-  useEffect(() => {
-    const subscription = new NativeEventEmitter(
-      NativeModules.ThemeSwitchAnimationModule
-    ).addListener('FINISHED_FREEZING_SCREEN', () => {
-      setTimeout(() => {
-        if (switchFunctionRef.current) {
-          switchFunctionRef.current();
-          if (localAnimationConfigRef.current) {
-            unfreezeWrapper(localAnimationConfigRef.current);
-          }
+console.log('setting up the listener');
+new NativeEventEmitter(NativeModules.ThemeSwitchAnimationModule).addListener(
+  'FINISHED_FREEZING_SCREEN',
+  () => {
+    console.log('calling the listener');
+    setTimeout(() => {
+      if (switchFunction) {
+        switchFunction();
+        if (localAnimationConfig) {
+          unfreezeWrapper(localAnimationConfig);
         }
-      });
+      }
     });
+  }
+);
 
-    return () => {
-      subscription.remove();
-    };
-  }, []);
-
-  const switchTheme = ({
-    switchThemeFunction,
-    animationConfig,
-  }: ThemeSwitcherHookProps) => {
-    localAnimationConfigRef.current =
-      animationConfig || localAnimationConfigRef.current;
-    ThemeSwitchAnimation.freezeScreen();
-    switchFunctionRef.current = switchThemeFunction;
-  };
-
-  return {
-    switchTheme: switchTheme,
-  };
+const switchTheme = ({
+  switchThemeFunction: incomingSwithThemeFunction,
+  animationConfig,
+}: ThemeSwitcherHookProps) => {
+  localAnimationConfig = animationConfig || localAnimationConfig;
+  ThemeSwitchAnimation.freezeScreen();
+  switchFunction = incomingSwithThemeFunction;
 };
 
 const validateCoordinates = (value: number, max: number, name: string) => {
@@ -176,4 +163,5 @@ const unfreezeWrapper = (localAnimationConfig: AnimationConfig) => {
     }
   });
 };
-export default useThemeSwitcher;
+
+export default switchTheme;

@@ -2,12 +2,10 @@
 import * as React from 'react';
 
 import { StyleSheet, View, Button } from 'react-native';
-import useThemeSwitcher from 'react-native-theme-switch-animation';
+import switchTheme from 'react-native-theme-switch-animation';
 
 export default function App() {
   const [theme, setTheme] = React.useState('light');
-
-  const { switchTheme } = useThemeSwitcher();
 
   return (
     <View
@@ -24,10 +22,10 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'circular',
-              duration: 3000,
-              cyRatio: 0.1,
-              cxRatio: 0.9,
+              type: 'fade',
+              duration: 900,
+              cyRatio: -0.5,
+              cxRatio: -0.9,
             },
           });
         }}
