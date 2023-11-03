@@ -58,6 +58,25 @@ export default function Example() {
 ```
 
 
+## switchTheme Function Props
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `switchThemeFunction` | `() => void` | Adds the function you use in your app to switch themes, doesn't matter if you use redux/context/zustand/mobx or any other way |
+| `animationConfig` | `AnimationConfig` | Configuration for the animation -> type, duration, starting point (`default is 'fade' with 500ms duration`)  |
+
+## animationConfig options
+| Name | Type | Description |
+| :------ | :------ | :------ |
+| `type` | `fade` `circular` `inverted-circular` | Specifies animation type |
+| `duration` | `number` | Specifies duration in milliseconds |
+| `cx` | `number` | Specifies starting x point for `circular` and `inverted-circular` animation (should not exceed your screen width) |
+| `cy` | `number` | Specifies starting y point for `circular` and `inverted-circular` animation (should not exceed your screen height) |
+| `cxRatio` | `number` | Specifies starting percentage of x point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
+| `cyRatio` | `number` | Specifies starting percentage of y point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
+
+## switchTheme Function Props
+
+
 
 ## License
 
