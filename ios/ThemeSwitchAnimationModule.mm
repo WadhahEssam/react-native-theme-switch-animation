@@ -32,6 +32,18 @@ RCT_EXPORT_METHOD(freezeScreen)
     [self sendEventWithName:@"FINISHED_FREEZING_SCREEN" body:@{@"key": @"value"}];
 }
 
+RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration csRation:(double) cxRatio cyRation:(double) cyRatio)
+{
+    NSLog(@"%@", type);
+    NSLog(@"%ld",(long) duration);
+    NSLog(@"%ld",(long) cyRatio);
+    if (isAnimating) {
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self removeFullScreenImage: duration];
+        });
+    }
+}
+
 - (void)displayCapturedImageFullScreen:(UIImage *)image {
     UIImageView *fullScreenImageView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     fullScreenImageView.image = image;
@@ -53,17 +65,8 @@ RCT_EXPORT_METHOD(freezeScreen)
     return capturedScreen;
 }
 
-RCT_EXPORT_METHOD(unfreezeScreen)
-{
-    if (isAnimating) {
-        dispatch_async(dispatch_get_main_queue(), ^{
-            [self removeFullScreenImage];
-        });
-    }
-}
-
-- (void)removeFullScreenImage {
-    [UIView animateWithDuration:0.5
+- (void)removeFullScreenImage: (NSInteger) duration {
+    [UIView animateWithDuration: duration / 1000
                      animations:^{
         self->overlayView.alpha = 0.0;
     }
