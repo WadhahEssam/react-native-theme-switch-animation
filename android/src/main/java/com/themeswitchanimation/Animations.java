@@ -3,6 +3,7 @@ package com.themeswitchanimation;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.graphics.Bitmap;
 import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
@@ -43,7 +44,8 @@ public class Animations {
             // Creating another image after switching the theme
             // because we can't make the root view above the overlay
             overlay.setVisibility(View.GONE);
-            ImageView capturedImageAfterSwitching = ThemeSwitchAnimationModule.captureScreenshot(rootView, reactContext);
+            final Bitmap[] capturedImageBitmap = {ThemeSwitchAnimationModule.captureScreenshot(rootView, reactContext)};
+            ImageView capturedImageAfterSwitching = ThemeSwitchAnimationModule.createImageView(capturedImageBitmap[0], reactContext);
             overlay.setVisibility(View.VISIBLE);
 
             rootView.addView(capturedImageAfterSwitching, new ViewGroup.LayoutParams(
@@ -64,6 +66,12 @@ public class Animations {
               public void onAnimationEnd(Animator animation) {
                 super.onAnimationEnd(animation);
                 capturedImageAfterSwitching.setVisibility(View.GONE);
+
+                if (capturedImageBitmap[0] != null && !capturedImageBitmap[0].isRecycled()) {
+                  capturedImageBitmap[0].recycle();
+                  capturedImageBitmap[0] = null;
+                }
+
                 overlay.setVisibility(View.GONE);
                 callback.run();
               }

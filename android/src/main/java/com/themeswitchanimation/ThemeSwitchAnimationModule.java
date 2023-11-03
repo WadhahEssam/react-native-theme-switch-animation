@@ -20,6 +20,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   private ReactContext reactContext;
   private ViewGroup rootView;
   private ImageView capturedImageView;
+  private Bitmap capturedImageBitmap;
   private boolean isAnimating = false;
 
   public ThemeSwitchAnimationModule(ReactApplicationContext reactContext) {
@@ -37,7 +38,8 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.rootView = (ViewGroup) getCurrentActivity().getWindow().getDecorView();
-      this.capturedImageView = captureScreenshot(this.rootView, this.reactContext);
+      this.capturedImageBitmap = captureScreenshot(this.rootView, this.reactContext);
+      this.capturedImageView = createImageView(this.capturedImageBitmap, this.reactContext);
 
       reactContext.runOnUiQueueThread(() -> {
         rootView.addView(capturedImageView, new ViewGroup.LayoutParams(
@@ -61,7 +63,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               Animations.performCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, new Runnable() {
                 @Override
                 public void run() {
-                  isAnimating = false;
+                  cleanUp();
                 }
               });
               break;
@@ -69,7 +71,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, reactContext, new Runnable() {
                 @Override
                 public void run() {
-                  isAnimating = false;
+                  cleanUp();
                 }
               });
               break;
@@ -78,7 +80,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               Animations.performFadeAnimation(capturedImageView, duration, new Runnable() {
                 @Override
                 public void run() {
-                  isAnimating = false;
+                  cleanUp();
                 }
               });
               break;
@@ -88,11 +90,24 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
     });
   }
 
-  public static ImageView captureScreenshot(View rootView, ReactContext reactContext) {
+  public void cleanUp() {
+    if (capturedImageBitmap != null && !capturedImageBitmap.isRecycled()) {
+      capturedImageBitmap.recycle();
+      capturedImageBitmap = null;
+    }
+    rootView.removeView(capturedImageView);
+    isAnimating = false;
+  }
+
+  public static Bitmap captureScreenshot(View rootView, ReactContext reactContext) {
     Bitmap capturedImageBitmap = Bitmap.createBitmap(rootView.getWidth(), rootView.getHeight(), Bitmap.Config.ARGB_8888);
     Canvas canvas = new Canvas(capturedImageBitmap);
     rootView.draw(canvas);
 
+    return capturedImageBitmap;
+  }
+
+  public static ImageView createImageView(Bitmap capturedImageBitmap, ReactContext reactContext) {
     ImageView capturedImageView = new ImageView(reactContext);
     LinearLayout.LayoutParams fullScreenImageOverlayLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     capturedImageView.setLayoutParams(fullScreenImageOverlayLP);
