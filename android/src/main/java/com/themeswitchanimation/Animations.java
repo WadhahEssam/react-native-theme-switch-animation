@@ -13,7 +13,7 @@ import com.facebook.react.bridge.ReactContext;
 
 public class Animations {
 
-  public static void performCircleAnimation(ImageView overlay, View rootView, long duration, float cxRatio, float cyRatio, Runnable callback) {
+  public static void performInvertedCircleAnimation(ImageView overlay, View rootView, long duration, float cxRatio, float cyRatio, Runnable callback) {
     int width = rootView.getWidth();
     int height = rootView.getHeight();
 
@@ -35,7 +35,7 @@ public class Animations {
     anim.start();
   }
 
-  public static void performInvertedCircleAnimation(ImageView overlay, ViewGroup rootView, long duration, float cxRatio, float cyRatio, ReactContext reactContext, Runnable callback) {
+  public static void performCircleAnimation(ImageView overlay, ViewGroup rootView, long duration, float cxRatio, float cyRatio, ReactContext reactContext, Runnable callback) {
     rootView.postOnAnimation(new Runnable() {
       private int frameCount = 0;
 

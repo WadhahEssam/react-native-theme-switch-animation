@@ -60,7 +60,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
         if (isAnimating) {
           switch (animationType) {
             case "circular":
-              Animations.performCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, new Runnable() {
+              Animations.performCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, reactContext, new Runnable() {
                 @Override
                 public void run() {
                   cleanUp();
@@ -68,7 +68,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               });
               break;
             case "circular-inverted":
-              Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, reactContext, new Runnable() {
+              Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, new Runnable() {
                 @Override
                 public void run() {
                   cleanUp();
