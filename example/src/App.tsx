@@ -25,9 +25,9 @@ export default function App() {
             },
             animationConfig: {
               type: 'circular-inverted',
-              duration: 1000,
-              cxRation: 0.2,
-              cyRation: 0.2,
+              duration: 1500,
+              cyRatio: 0.1,
+              cxRatio: 0.5,
             },
           });
         }}

@@ -14,10 +14,15 @@ import com.facebook.react.bridge.ReactContext;
 public class Animations {
 
   public static void performCircleAnimation(ImageView overlay, View rootView, long duration, float cxRatio, float cyRatio, Runnable callback) {
-    int cx = (int) (rootView.getWidth() * cxRatio);
-    int cy = (int) (rootView.getHeight() * cyRatio);
-    float finalRadius = Math.max(rootView.getWidth(), rootView.getHeight());
-    Animator anim = ViewAnimationUtils.createCircularReveal(overlay, cx, cy, finalRadius, 0);
+    int width = rootView.getWidth();
+    int height = rootView.getHeight();
+
+    int cx = (int) (width * cxRatio);
+    int cy = (int) (height * cyRatio);
+
+    float startRadius = Helpers.getPointMaxDistanceInsideContainer(cx, cy, width, height);
+
+    Animator anim = ViewAnimationUtils.createCircularReveal(overlay, cx, cy, startRadius, 0);
     anim.setDuration(duration);
     anim.addListener(new AnimatorListenerAdapter() {
       @Override
@@ -57,9 +62,9 @@ public class Animations {
 
             int cx = (int) (width * cxRatio);
             int cy = (int) (height * cyRatio);
-            float finalRadius = Math.max(rootView.getWidth(), rootView.getHeight());
+            float finalRadius = Helpers.getPointMaxDistanceInsideContainer(cx, cy, width, height);
 
-            Animator anim = ViewAnimationUtils.createCircularReveal(capturedImageAfterSwitching, cx, cy, 0,finalRadius );
+            Animator anim = ViewAnimationUtils.createCircularReveal(capturedImageAfterSwitching, cx, cy, 0, finalRadius);
             anim.setDuration(duration);
             anim.addListener(new AnimatorListenerAdapter() {
               @Override
