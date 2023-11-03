@@ -74,8 +74,30 @@ export default function Example() {
 | `cxRatio` | `number` | Specifies starting percentage of x point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
 | `cyRatio` | `number` | Specifies starting percentage of y point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
 
-## switchTheme Function Props
+## Auto Circular Animation Button
+If you would like the circular animation to start from/to a button on your ui automatically, you can do the following
 
+```js
+import switchTheme from 'react-native-theme-switch-animation';
+
+<TouchableOpacity
+  onPress={(e) => {
+    e.currentTarget.measure((width, height, px, py) => {
+      switchTheme({
+        switchThemeFunction: () => {
+          setTheme(theme === 'light' ? 'dark' : 'light');
+        },
+        animationConfig: {
+          type: 'circular',
+          duration: 900,
+          cy: py + height / 2,
+          cx: px + width / 2,
+        },
+      });
+    });
+  }}
+/>
+```
 
 
 ## License
