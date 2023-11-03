@@ -57,6 +57,22 @@ export default function Example() {
 }
 ```
 
+Circular Example
+```js
+  switchTheme({
+    switchThemeFunction: () => {
+      setTheme(theme === 'light' ? 'dark' : 'light'); // your switch theme function
+    },
+    animationConfig: {
+      type: 'circular',
+      duration: 900,
+      cxRatio: 0.5,
+      cyRation: 0.5
+    },
+  });
+}
+```
+
 
 ## switchTheme Function Props
 | Name | Type | Description |
