@@ -1,7 +1,7 @@
 {
   "name": "react-native-theme-switch-animation",
   "version": "0.2.0",
-  "description": "Custom animations for theme switching for React Native Apps",
+  "description": "A Plug & Play Animations for Switching (Dark/Light) Themes. 🌖",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
   "types": "lib/typescript/src/index.d.ts",
@@ -38,7 +38,10 @@
   "keywords": [
     "react-native",
     "ios",
-    "android"
+    "android",
+    "animation",
+    "theme",
+    "dark mode"
   ],
   "repository": "https://github.com/WadhahEssam/react-native-theme-switch-animation",
   "author": "Wadah Esam <wadah-wleed@hotmail.com> (https://github.com/WadhahEssam)",
