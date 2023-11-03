@@ -89,31 +89,14 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
                                cxRatio:(CGFloat)cxRatio
                                cyRatio:(CGFloat)cyRatio
                               callback:(void (^)(void))callback {
-    //    dispatch_async(dispatch_get_main_queue(), ^{
     CGFloat width = CGRectGetWidth(overlayView.bounds);
     CGFloat height = CGRectGetHeight(overlayView.bounds);
-    
-    NSLog(@"%f", width);
-    NSLog(@"%f", height);
-    NSLog(@"%f", cxRatio);
-    NSLog(@"%f", cyRatio);
     CGPoint center = CGPointMake(width * cxRatio, height * cyRatio);
     CGFloat startRadius = [self getPointMaxDistanceInsideContainerWithCx:center.x cy:center.y width:width height:height];
     
     
-    NSLog(@"start radius %f", startRadius);
-    UIBezierPath *startPath = [UIBezierPath bezierPathWithArcCenter:center
-                                                             radius:startRadius
-                                                         startAngle:0
-                                                           endAngle:M_PI * 2
-                                                          clockwise:YES];
-    
-    // Create a circular path that acts as the end state of the animation
-    UIBezierPath *endPath = [UIBezierPath bezierPathWithArcCenter:center
-                                                           radius:0.1
-                                                       startAngle:0
-                                                         endAngle:M_PI * 2
-                                                        clockwise:YES];
+    UIBezierPath *startPath = [self generateCircule:startRadius center:center];
+    UIBezierPath *endPath = [self generateCircule:0 center:center];
     
     
     CAShapeLayer *maskLayer = [CAShapeLayer layer];
@@ -136,12 +119,11 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
         if (callback) {
             callback();
         }
-        maskLayerAnimation.delegate = nil; // Set delegate to nil to prevent memory leak
+        maskLayerAnimation.delegate = nil;
     }];
     
     [maskLayer addAnimation:maskLayerAnimation forKey:@"path"];
     [CATransaction commit];
-    //    });
 }
 
 - (CGFloat)getPointMaxDistanceInsideContainerWithCx:(CGFloat)cx cy:(CGFloat)cy width:(CGFloat)width height:(CGFloat)height {
@@ -150,6 +132,16 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
     CGFloat bottomLeftDistance = hypotf(cx, height - cy);
     CGFloat bottomRightDistance = hypotf(width - cx, height - cy);
     return MAX(MAX(topLeftDistance, topRightDistance), MAX(bottomLeftDistance, bottomRightDistance));
+}
+
+- (UIBezierPath*) generateCircule: (CGFloat)radius center:(CGPoint)center {
+    UIBezierPath *circule = [UIBezierPath bezierPathWithArcCenter:center
+                                                           radius:radius == 0 ? 0.1 : radius // 0 produces weired animation
+                                                       startAngle:0
+                                                         endAngle:M_PI * 2
+                                                        clockwise:YES];
+    
+    return circule;
 }
 
 @end
