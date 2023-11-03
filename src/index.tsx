@@ -61,16 +61,14 @@ let localAnimationConfig: AnimationConfig = {
   duration: 500,
 };
 
-console.log('setting up the listener');
 new NativeEventEmitter(NativeModules.ThemeSwitchAnimationModule).addListener(
   'FINISHED_FREEZING_SCREEN',
   () => {
-    console.log('calling the listener');
     setTimeout(() => {
       if (switchFunction) {
         switchFunction();
         if (localAnimationConfig) {
-          unfreezeWrapper(localAnimationConfig);
+          unfreezeWrapper();
         }
       }
     });
@@ -110,7 +108,7 @@ const calculateActualRation = (ration: number) => {
   return ration > 0 ? ration : 1 + ration;
 };
 
-const unfreezeWrapper = (localAnimationConfig: AnimationConfig) => {
+const unfreezeWrapper = () => {
   const defaultRatio = 0.5;
   setImmediate(() => {
     if (
