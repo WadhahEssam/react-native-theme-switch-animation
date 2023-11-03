@@ -31,12 +31,10 @@ npx pod-install
 ## Usage
 
 ```js
-import useThemeSwitcher from 'react-native-theme-switch-animation';
+import switchTheme from 'react-native-theme-switch-animation';
 
 export default function Example() {
   const [theme, setTheme] = React.useState('light');
-
-  const { switchTheme } = useThemeSwitcher();
 
   return (
     <Button
