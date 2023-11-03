@@ -7,7 +7,7 @@
 #import <React/RCTBridgeModule.h>
 #import <React/RCTEventEmitter.h>
 
-@interface ThemeSwitchAnimationModule : RCTEventEmitter <RCTBridgeModule>
+@interface ThemeSwitchAnimationModule : RCTEventEmitter <RCTBridgeModule, CAAnimationDelegate>
 //#endif
 
 @end

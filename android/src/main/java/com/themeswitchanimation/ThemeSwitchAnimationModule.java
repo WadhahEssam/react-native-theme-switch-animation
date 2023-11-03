@@ -13,8 +13,6 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-import javax.annotation.Nullable;
-
 public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   private static final String TAG = "ThemeSwitchAnimationModule";
   private ReactContext reactContext;
