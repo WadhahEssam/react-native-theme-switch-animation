@@ -25,15 +25,17 @@ const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
       }
     );
 
+type CircularAnimationType = 'circular' | 'inverted-circular';
+
 type CircularAnimationConfig = {
-  type: 'circular' | 'circular-inverted';
+  type: CircularAnimationType;
   duration: number;
   cxRatio: number;
   cyRatio: number;
 };
 
 type CircularAnimationConfigExact = {
-  type: 'circular' | 'circular-inverted';
+  type: CircularAnimationType;
   duration: number;
   cx: number;
   cy: number;
@@ -117,12 +119,16 @@ const calculateRatio = (value: number, max: number) => {
   return value > 0 ? value / max : 1 + value / max;
 };
 
+const calculateActualRation = (ration: number) => {
+  return ration > 0 ? ration : 1 + ration;
+};
+
 const unfreezeWrapper = (localAnimationConfig: AnimationConfig) => {
   const defaultRatio = 0.5;
   setImmediate(() => {
     if (
       localAnimationConfig.type === 'circular' ||
-      localAnimationConfig.type === 'circular-inverted'
+      localAnimationConfig.type === 'inverted-circular'
     ) {
       if ('cx' in localAnimationConfig && 'cy' in localAnimationConfig) {
         const { cx, cy } = localAnimationConfig as CircularAnimationConfigExact;
@@ -150,11 +156,14 @@ const unfreezeWrapper = (localAnimationConfig: AnimationConfig) => {
         validateCoordinates(cxRatio, 1, 'cxRatio');
         validateCoordinates(cyRatio, 1, 'cyRatio');
 
+        const cxRatioActual = calculateActualRation(cxRatio);
+        const cyRatioActual = calculateActualRation(cyRatio);
+
         ThemeSwitchAnimation.unfreezeScreen(
           localAnimationConfig.type,
           localAnimationConfig.duration,
-          cxRatio,
-          cyRatio
+          cxRatioActual,
+          cyRatioActual
         );
       }
     } else {

@@ -24,10 +24,10 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'circular-inverted',
+              type: 'inverted-circular',
               duration: 1500,
-              cyRatio: 0.2,
-              cxRatio: 0.2,
+              cyRatio: 0.1,
+              cxRatio: 0.9,
             },
           });
         }}
