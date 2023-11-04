@@ -22,11 +22,11 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'circular',
-              duration: 900,
+              type: 'inverted-circular',
+              duration: 1200,
               startingPoint: {
                 cx: 200,
-                cy: 0,
+                cy: -1,
               },
             },
           });

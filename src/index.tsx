@@ -12,7 +12,15 @@ import {
   validateCoordinates,
 } from './helpers';
 
-const { width, height } = Dimensions.get('screen');
+const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('screen');
+const IS_SUPPORTED_PLATFORM =
+  Platform.OS === 'android' || Platform.OS === 'ios';
+let ThemeSwitchAnimation: any = null;
+let switchFunction: () => void = () => {};
+let localAnimationConfig: AnimationConfig = {
+  type: 'fade',
+  duration: 500,
+};
 
 const LINKING_ERROR =
   `The package 'react-native-theme-switch-animation' doesn't seem to be linked. Make sure: \n\n` +
@@ -20,43 +28,43 @@ const LINKING_ERROR =
   '- You rebuilt the app after installing the package\n' +
   '- You are not using Expo Go\n';
 
-const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
-  ? NativeModules.ThemeSwitchAnimationModule
-  : new Proxy(
-      {},
-      {
-        get() {
-          throw new Error(LINKING_ERROR);
-        },
+if (IS_SUPPORTED_PLATFORM) {
+  ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
+    ? NativeModules.ThemeSwitchAnimationModule
+    : new Proxy(
+        {},
+        {
+          get() {
+            throw new Error(LINKING_ERROR);
+          },
+        }
+      );
+
+  const themeSwitchAnimationListener = new ThemeSwitchAnimationListener();
+
+  themeSwitchAnimationListener.addEventListener(() => {
+    setTimeout(() => {
+      if (switchFunction) {
+        switchFunction();
+        if (localAnimationConfig) {
+          unfreezeWrapper();
+        }
       }
-    );
-
-let switchFunction: () => void = () => {};
-let localAnimationConfig: AnimationConfig = {
-  type: 'fade',
-  duration: 500,
-};
-
-const themeSwitchAnimationListener = new ThemeSwitchAnimationListener();
-
-themeSwitchAnimationListener.addEventListener(() => {
-  setTimeout(() => {
-    if (switchFunction) {
-      switchFunction();
-      if (localAnimationConfig) {
-        unfreezeWrapper();
-      }
-    }
+    });
   });
-});
+}
 
 const switchTheme = ({
   switchThemeFunction: incomingSwitchThemeFunction,
   animationConfig,
 }: ThemeSwitcherHookProps) => {
-  localAnimationConfig = animationConfig || localAnimationConfig;
-  ThemeSwitchAnimation.freezeScreen();
-  switchFunction = incomingSwitchThemeFunction;
+  if (IS_SUPPORTED_PLATFORM) {
+    localAnimationConfig = animationConfig || localAnimationConfig;
+    ThemeSwitchAnimation.freezeScreen();
+    switchFunction = incomingSwitchThemeFunction;
+  } else {
+    incomingSwitchThemeFunction();
+  }
 };
 
 const unfreezeWrapper = () => {
@@ -75,11 +83,11 @@ const unfreezeWrapper = () => {
         )?.startingPoint;
 
         if (
-          validateCoordinates(cx, width, 'cx') &&
-          validateCoordinates(cy, height, 'cy')
+          validateCoordinates(cx, SCREEN_WIDTH, 'cx') &&
+          validateCoordinates(cy, SCREEN_HEIGHT, 'cy')
         ) {
-          const cxRatio = calculateRatio(cx, width);
-          const cyRatio = calculateRatio(cy, height);
+          const cxRatio = calculateRatio(cx, SCREEN_WIDTH);
+          const cyRatio = calculateRatio(cy, SCREEN_HEIGHT);
 
           ThemeSwitchAnimation.unfreezeScreen(
             localAnimationConfig.type,
