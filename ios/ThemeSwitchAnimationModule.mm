@@ -5,10 +5,10 @@
 
 
 @implementation ThemeSwitchAnimationModule
-{
-    UIImageView *overlayView;
-    BOOL isAnimating;
-}
+
+@synthesize overlayView, isAnimating;
+
+static NSString * const kFinishedFreezingScreenEvent = @"FINISHED_FREEZING_SCREEN";
 
 RCT_EXPORT_MODULE();
 
@@ -21,15 +21,14 @@ RCT_EXPORT_METHOD(freezeScreen)
     if (!isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self->isAnimating = YES;
-            UIImage *capturedScreen = [self captureScreen];
-            [self displayCapturedImageFullScreen:capturedScreen];
+            [self captureAndDisplayScreen];
             [self triggerEvent];
         });
     }
 }
 
 - (void)triggerEvent {
-    [self sendEventWithName:@"FINISHED_FREEZING_SCREEN" body:@{@"key": @"value"}];
+    [self sendEventWithName:kFinishedFreezingScreenEvent body:@{@"key": @"value"}];
 }
 
 RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration csRation:(CGFloat) cxRatio cyRation:(CGFloat) cyRatio)
@@ -52,6 +51,11 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
             }
         });
     }
+}
+
+- (void)captureAndDisplayScreen {
+    UIImage *capturedScreen = [self captureScreen];
+    [self displayCapturedImageFullScreen:capturedScreen];
 }
 
 - (void)displayCapturedImageFullScreen:(UIImage *)image {
