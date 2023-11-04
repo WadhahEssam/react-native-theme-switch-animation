@@ -59,20 +59,19 @@ export default function Example() {
 
 Circular Example
 ```js
-  switchTheme({
-    switchThemeFunction: () => {
-      setTheme(theme === 'light' ? 'dark' : 'light'); // your switch theme function
-    },
-    animationConfig: {
-      type: 'circular',
-      duration: 900,
-      startingPoint: {
-        cxRatio: 0.5,
-        cyRation: 0.5
-      }
-    },
-  });
-}
+switchTheme({
+  switchThemeFunction: () => {
+    setTheme(theme === 'light' ? 'dark' : 'light'); // your switch theme function
+  },
+  animationConfig: {
+    type: 'circular',
+    duration: 900,
+    startingPoint: {
+      cxRatio: 0.5,
+      cyRation: 0.5
+    }
+  },
+});
 ```
 
 
