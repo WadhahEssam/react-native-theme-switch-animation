@@ -66,8 +66,10 @@ Circular Example
     animationConfig: {
       type: 'circular',
       duration: 900,
-      cxRatio: 0.5,
-      cyRation: 0.5
+      startingPoint: {
+        cxRatio: 0.5,
+        cyRation: 0.5
+      }
     },
   });
 }
@@ -85,6 +87,9 @@ Circular Example
 | :------ | :------ | :------ |
 | `type` | `fade` `circular` `inverted-circular` | Specifies animation type |
 | `duration` | `number` | Specifies duration in milliseconds |
+| `startingPoint` | `StartingPointConfig` | Configuration for the `circular` animation, where does the animation start in the screen |
+
+## startingPoint options
 | `cx` | `number` | Specifies starting x point for `circular` and `inverted-circular` animation (should not exceed your screen width) |
 | `cy` | `number` | Specifies starting y point for `circular` and `inverted-circular` animation (should not exceed your screen height) |
 | `cxRatio` | `number` | Specifies starting percentage of x point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
@@ -98,7 +103,7 @@ import switchTheme from 'react-native-theme-switch-animation';
 
 <TouchableOpacity
   onPress={(e) => {
-    e.currentTarget.measure((width, height, px, py) => {
+    e.currentTarget.measure((x1, y1, width, height, px, py) => {
       switchTheme({
         switchThemeFunction: () => {
           setTheme(theme === 'light' ? 'dark' : 'light');
@@ -106,8 +111,10 @@ import switchTheme from 'react-native-theme-switch-animation';
         animationConfig: {
           type: 'circular',
           duration: 900,
-          cy: py + height / 2,
-          cx: px + width / 2,
+          startingPoint: {
+            cy: py + height / 2,
+            cx: px + width / 2,
+          }
         },
       });
     });
