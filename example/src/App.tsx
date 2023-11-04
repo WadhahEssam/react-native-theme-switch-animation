@@ -22,8 +22,8 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'inverted-circular',
-              duration: 1200,
+              type: 'circular',
+              duration: 1000,
               startingPoint: {
                 cx: 200,
                 cy: -1,

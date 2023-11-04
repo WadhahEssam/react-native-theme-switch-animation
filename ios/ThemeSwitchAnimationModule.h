@@ -7,4 +7,8 @@
 @property (nonatomic, strong) UIImageView *overlayView;
 @property (nonatomic, assign) BOOL isAnimating;
 
+- (void)captureAndDisplayScreen;
+- (void)displayCapturedImageFullScreen:(UIImage *)image;
+- (UIImage *)captureScreen;
+
 @end
