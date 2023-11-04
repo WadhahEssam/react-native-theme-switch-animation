@@ -1,9 +1,16 @@
+import { NativeModules, Platform, Dimensions } from 'react-native';
+import type {
+  AnimationConfig,
+  CircularAnimationConfig,
+  CircularAnimationConfigExact,
+  ThemeSwitcherHookProps,
+} from './types';
+import ThemeSwitchAnimationListener from './ThemeSwitchAnimationListener';
 import {
-  NativeModules,
-  Platform,
-  NativeEventEmitter,
-  Dimensions,
-} from 'react-native';
+  calculateActualRation,
+  calculateRatio,
+  validateCoordinates,
+} from './helpers';
 
 const { width, height } = Dimensions.get('screen');
 
@@ -24,88 +31,32 @@ const ThemeSwitchAnimation = NativeModules.ThemeSwitchAnimationModule
       }
     );
 
-type CircularAnimationType = 'circular' | 'inverted-circular';
-
-type CircularAnimationConfig = {
-  type: CircularAnimationType;
-  duration: number;
-  cxRatio: number;
-  cyRatio: number;
-};
-
-type CircularAnimationConfigExact = {
-  type: CircularAnimationType;
-  duration: number;
-  cx: number;
-  cy: number;
-};
-
-type FadeAnimationConfig = {
-  type: 'fade';
-  duration: number;
-};
-
-type AnimationConfig =
-  | CircularAnimationConfig
-  | FadeAnimationConfig
-  | CircularAnimationConfigExact;
-
-type ThemeSwitcherHookProps = {
-  switchThemeFunction: () => void;
-  animationConfig?: AnimationConfig;
-};
-
 let switchFunction: () => void = () => {};
 let localAnimationConfig: AnimationConfig = {
   type: 'fade',
   duration: 500,
 };
 
-new NativeEventEmitter(NativeModules.ThemeSwitchAnimationModule).addListener(
-  'FINISHED_FREEZING_SCREEN',
-  () => {
-    setTimeout(() => {
-      if (switchFunction) {
-        switchFunction();
-        if (localAnimationConfig) {
-          unfreezeWrapper();
-        }
+const themeSwitchAnimationListener = new ThemeSwitchAnimationListener();
+
+themeSwitchAnimationListener.addEventListener(() => {
+  setTimeout(() => {
+    if (switchFunction) {
+      switchFunction();
+      if (localAnimationConfig) {
+        unfreezeWrapper();
       }
-    });
-  }
-);
+    }
+  });
+});
 
 const switchTheme = ({
-  switchThemeFunction: incomingSwithThemeFunction,
+  switchThemeFunction: incomingSwitchThemeFunction,
   animationConfig,
 }: ThemeSwitcherHookProps) => {
   localAnimationConfig = animationConfig || localAnimationConfig;
   ThemeSwitchAnimation.freezeScreen();
-  switchFunction = incomingSwithThemeFunction;
-};
-
-const validateCoordinates = (value: number, max: number, name: string) => {
-  if (value === undefined) {
-    throw new Error(`${name} is undefined. Please provide both cx and cy.`);
-  }
-  if (value > max) {
-    throw new Error(
-      `${name} is greater than ${max}. Please provide a ${name} smaller than screen size.`
-    );
-  }
-  if (value < -max) {
-    throw new Error(
-      `${name} is smaller than -${max}. Please provide a ${name} bigger than -screen size.`
-    );
-  }
-};
-
-const calculateRatio = (value: number, max: number) => {
-  return value > 0 ? value / max : 1 + value / max;
-};
-
-const calculateActualRation = (ration: number) => {
-  return ration > 0 ? ration : 1 + ration;
+  switchFunction = incomingSwitchThemeFunction;
 };
 
 const unfreezeWrapper = () => {
@@ -115,41 +66,56 @@ const unfreezeWrapper = () => {
       localAnimationConfig.type === 'circular' ||
       localAnimationConfig.type === 'inverted-circular'
     ) {
-      if ('cx' in localAnimationConfig && 'cy' in localAnimationConfig) {
-        const { cx, cy } = localAnimationConfig as CircularAnimationConfigExact;
-
-        validateCoordinates(cx, width, 'cx');
-        validateCoordinates(cy, height, 'cy');
-
-        const cxRatio = calculateRatio(cx, width);
-        const cyRatio = calculateRatio(cy, height);
-
-        ThemeSwitchAnimation.unfreezeScreen(
-          localAnimationConfig.type,
-          localAnimationConfig.duration,
-          cxRatio,
-          cyRatio
-        );
-      } else if (
-        'cxRatio' in localAnimationConfig &&
-        'cyRatio' in localAnimationConfig
+      if (
+        'cx' in localAnimationConfig.startingPoint &&
+        'cy' in localAnimationConfig.startingPoint
       ) {
-        // Assuming 'cxRatio' and 'cyRatio' are part of CircularAnimationConfig
-        const { cxRatio, cyRatio } =
-          localAnimationConfig as CircularAnimationConfig;
+        const { cx, cy } = (
+          localAnimationConfig as CircularAnimationConfigExact
+        )?.startingPoint;
 
-        validateCoordinates(cxRatio, 1, 'cxRatio');
-        validateCoordinates(cyRatio, 1, 'cyRatio');
+        if (
+          validateCoordinates(cx, width, 'cx') &&
+          validateCoordinates(cy, height, 'cy')
+        ) {
+          const cxRatio = calculateRatio(cx, width);
+          const cyRatio = calculateRatio(cy, height);
 
-        const cxRatioActual = calculateActualRation(cxRatio);
-        const cyRatioActual = calculateActualRation(cyRatio);
+          ThemeSwitchAnimation.unfreezeScreen(
+            localAnimationConfig.type,
+            localAnimationConfig.duration,
+            cxRatio,
+            cyRatio
+          );
+        } else {
+          // cleanup
+          ThemeSwitchAnimation.unfreezeScreen('fade', 200, 0.5, 0.5);
+        }
+      } else if (
+        'cxRatio' in localAnimationConfig.startingPoint &&
+        'cyRatio' in localAnimationConfig.startingPoint
+      ) {
+        const { cxRatio, cyRatio } = (
+          localAnimationConfig as CircularAnimationConfig
+        )?.startingPoint;
 
-        ThemeSwitchAnimation.unfreezeScreen(
-          localAnimationConfig.type,
-          localAnimationConfig.duration,
-          cxRatioActual,
-          cyRatioActual
-        );
+        if (
+          validateCoordinates(cxRatio, 1, 'cxRatio') &&
+          validateCoordinates(cyRatio, 1, 'cyRatio')
+        ) {
+          const cxRatioActual = calculateActualRation(cxRatio);
+          const cyRatioActual = calculateActualRation(cyRatio);
+
+          ThemeSwitchAnimation.unfreezeScreen(
+            localAnimationConfig.type,
+            localAnimationConfig.duration,
+            cxRatioActual,
+            cyRatioActual
+          );
+        } else {
+          // cleanup
+          ThemeSwitchAnimation.unfreezeScreen('fade', 500, 0.5, 0.5);
+        }
       }
     } else {
       ThemeSwitchAnimation.unfreezeScreen(

@@ -22,8 +22,12 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'fade',
+              type: 'circular',
               duration: 900,
+              startingPoint: {
+                cx: 200,
+                cy: 0,
+              },
             },
           });
         }}
