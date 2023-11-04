@@ -1,6 +1,6 @@
 {
   "name": "react-native-theme-switch-animation",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "A Plug & Play Animations for Switching (Dark/Light) Themes. 🌖",
   "main": "lib/commonjs/index",
   "module": "lib/module/index",
