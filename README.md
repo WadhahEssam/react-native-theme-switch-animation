@@ -5,7 +5,7 @@ A Plug & Play Animations for Switching (Dark/Light) themes. 🌗
 ### 🦄 Features
 - ✅  Supports multiple animation types.
 - ✅  Blazing fast - [60/120]fps
-- ✅  Plug and Play, doesn't matter whay you use for switching themes 
+- ✅  Plug and Play, doesn't matter what you use for switching themes 
 - ✅  Can be used for different theme colors, not necessarly for dark/light
 
 <p align="center">
