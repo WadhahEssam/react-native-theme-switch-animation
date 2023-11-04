@@ -89,6 +89,8 @@ switchTheme({
 | `startingPoint` | `StartingPointConfig` | Configuration for the `circular` animation, where does the animation start in the screen |
 
 ## startingPoint options
+| Name | Type | Description |
+| :------ | :------ | :------ |
 | `cx` | `number` | Specifies starting x point for `circular` and `inverted-circular` animation (should not exceed your screen width) |
 | `cy` | `number` | Specifies starting y point for `circular` and `inverted-circular` animation (should not exceed your screen height) |
 | `cxRatio` | `number` | Specifies starting percentage of x point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
