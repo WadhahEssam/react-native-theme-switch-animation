@@ -68,7 +68,7 @@ switchTheme({
     duration: 900,
     startingPoint: {
       cxRatio: 0.5,
-      cyRation: 0.5
+      cyRatio: 0.5
     }
   },
 });
