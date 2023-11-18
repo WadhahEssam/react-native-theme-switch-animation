@@ -22,7 +22,6 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(freezeScreen)
 {
-    NSLog(@"Freeeezing");
     if (!isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self->isAnimating = YES;

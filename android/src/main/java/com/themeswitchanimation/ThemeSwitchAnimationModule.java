@@ -13,8 +13,9 @@ import com.facebook.react.bridge.ReactContextBaseJavaModule;
 import com.facebook.react.bridge.ReactMethod;
 import com.facebook.react.modules.core.DeviceEventManagerModule;
 
-public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
-  private static final String TAG = "ThemeSwitchAnimationModule";
+public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
+  public static final String NAME = "ThemeSwitchAnimationModule";
+
   private ReactContext reactContext;
   private ViewGroup rootView;
   private ImageView capturedImageView;
@@ -28,7 +29,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
 
   @Override
   public String getName() {
-    return TAG;
+    return NAME;
   }
 
   @ReactMethod
@@ -51,14 +52,14 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
-  public void unfreezeScreen(String animationType, int duration, float cxRatio, float cyRatio) {
+  public void unfreezeScreen(String animationType, double duration, double cxRatio, double cyRatio) {
     reactContext.runOnUiQueueThread(new Runnable() {
       @Override
       public void run() {
         if (isAnimating) {
           switch (animationType) {
             case "circular":
-              Animations.performCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, reactContext, new Runnable() {
+              Animations.performCircleAnimation(capturedImageView, rootView, (int) duration, cxRatio, cyRatio, reactContext, new Runnable() {
                 @Override
                 public void run() {
                   cleanUp();
@@ -66,7 +67,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               });
               break;
             case "inverted-circular":
-              Animations.performInvertedCircleAnimation(capturedImageView, rootView, duration, cxRatio, cyRatio, new Runnable() {
+              Animations.performInvertedCircleAnimation(capturedImageView, rootView, (int) duration, cxRatio, cyRatio, new Runnable() {
                 @Override
                 public void run() {
                   cleanUp();
@@ -75,7 +76,7 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
               break;
             case "fade":
             default:
-              Animations.performFadeAnimation(capturedImageView, duration, new Runnable() {
+              Animations.performFadeAnimation(capturedImageView, (int) duration, new Runnable() {
                 @Override
                 public void run() {
                   cleanUp();
@@ -119,5 +120,5 @@ public class ThemeSwitchAnimationModule extends ReactContextBaseJavaModule {
   public void addListener(String eventName) {}
 
   @ReactMethod
-  public void removeListeners(Integer count) {}
+  public void removeListeners(double count) {}
 }
