@@ -8,7 +8,7 @@ A Plug & Play Animations for Switching (Dark/Light) themes. 🌗
 - ✅  Plug and Play, doesn't matter what you use for switching themes 
 - ✅  Can be used for different theme colors, not necessarily for dark/light
 - ✅  Supports turbo modules for new architecture 
-- 
+
 <p align="center">
 <img src="https://github.com/WadhahEssam/react-native-theme-switch-animation/assets/24798045/0aa19507-702e-4075-b045-303ad27b3dc0" width="600"/>
 </p>
