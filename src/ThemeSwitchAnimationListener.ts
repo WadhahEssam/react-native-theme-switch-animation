@@ -1,4 +1,5 @@
-import { NativeModules, NativeEventEmitter } from 'react-native';
+import { NativeEventEmitter } from 'react-native';
+import module from './module';
 
 export default class ThemeSwitchAnimationListener {
   private listenerAdded: boolean;
@@ -6,9 +7,7 @@ export default class ThemeSwitchAnimationListener {
 
   constructor() {
     this.listenerAdded = false;
-    this.eventEmitter = new NativeEventEmitter(
-      NativeModules.ThemeSwitchAnimationModule
-    );
+    this.eventEmitter = new NativeEventEmitter(module);
   }
 
   addEventListener(callback: () => void) {

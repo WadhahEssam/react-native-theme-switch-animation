@@ -1,7 +1,7 @@
 /* eslint-disable react-native/no-inline-styles */
 import * as React from 'react';
 
-import { StyleSheet, View, Button } from 'react-native';
+import { StyleSheet, View, Button, Text } from 'react-native';
 import switchTheme from 'react-native-theme-switch-animation';
 
 export default function App() {
@@ -14,6 +14,22 @@ export default function App() {
         backgroundColor: theme === 'light' ? 'white' : 'black',
       }}
     >
+      <View
+        style={{
+          borderWidth: 1,
+          borderColor: theme === 'light' ? 'black' : 'white',
+          borderRadius: 1.4,
+          padding: 50,
+        }}
+      >
+        <Text
+          style={{
+            color: theme === 'light' ? 'black' : 'white',
+          }}
+        >
+          test
+        </Text>
+      </View>
       <Button
         title="Switch Theme"
         onPress={() => {

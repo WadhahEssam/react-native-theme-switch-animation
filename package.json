@@ -7,7 +7,6 @@
   "types": "lib/typescript/src/index.d.ts",
   "react-native": "src/index",
   "source": "src/index",
-  "private": false,
   "files": [
     "src",
     "lib",
@@ -159,5 +158,10 @@
         }
       ]
     ]
+  },
+  "codegenConfig": {
+    "name": "RNThemeSwitchAnimationModule",
+    "type": "modules",
+    "jsSrcsDir": "src"
   }
 }

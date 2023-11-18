@@ -5,7 +5,10 @@
 #import "AnimationHelper.h"
 
 
-@implementation ThemeSwitchAnimationModule
+@implementation ThemeSwitchAnimationModule {
+    bool hasListeners;
+}
+
 
 @synthesize overlayView, isAnimating;
 
@@ -19,6 +22,7 @@ RCT_EXPORT_MODULE();
 
 RCT_EXPORT_METHOD(freezeScreen)
 {
+    NSLog(@"Freeeezing");
     if (!isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self->isAnimating = YES;
@@ -28,11 +32,28 @@ RCT_EXPORT_METHOD(freezeScreen)
     }
 }
 
-- (void)triggerEvent {
-    [self sendEventWithName:kFinishedFreezingScreenEvent body:@{@"key": @"value"}];
++ (BOOL)requiresMainQueueSetup {
+  return NO; // Return YES if you need to execute on the main thread
 }
 
-RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration csRation:(CGFloat) cxRatio cyRation:(CGFloat) cyRatio)
+- (void)startObserving
+{
+  hasListeners = YES;
+}
+
+- (void)stopObserving
+{
+  hasListeners = NO;
+}
+
+- (void)triggerEvent
+{
+  if (hasListeners) {
+      [self sendEventWithName:kFinishedFreezingScreenEvent body:@{@"key": @"value"}];
+  }
+}
+
+RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxRatio:(double)cxRatio cyRatio:(double)cyRatio)
 {
     if (isAnimating) {
         void (^completionCallback)(void) = ^{
@@ -77,5 +98,13 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString*) type duration:(NSInteger) duration
     return capturedScreen;
 }
 
+// Don't compile this code when we build for the old architecture.
+#ifdef RCT_NEW_ARCH_ENABLED
+- (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
+    (const facebook::react::ObjCTurboModule::InitParams &)params
+{
+    return std::make_shared<facebook::react::NativeThemeSwitchAnimationModuleSpecJSI>(params);
+}
+#endif
 
 @end
