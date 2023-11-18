@@ -9,15 +9,20 @@ const LINKING_ERROR =
 // @ts-expect-error
 const isTurboModuleEnabled = global.__turboModuleProxy != null;
 
-const module = (() => {
-  if (isTurboModuleEnabled) {
-    return require('./NativeThemeSwitchAnimationModule').default;
-  }
-  if (NativeModules.ThemeSwitchAnimationModule) {
-    return NativeModules.ThemeSwitchAnimationModule;
-  }
+const IS_SUPPORTED_PLATFORM =
+  Platform.OS === 'android' || Platform.OS === 'ios';
 
-  throw new Error(LINKING_ERROR);
+const module = (() => {
+  if (IS_SUPPORTED_PLATFORM) {
+    if (isTurboModuleEnabled) {
+      return require('./NativeThemeSwitchAnimationModule').default;
+    }
+    if (NativeModules.ThemeSwitchAnimationModule) {
+      return NativeModules.ThemeSwitchAnimationModule;
+    }
+    throw new Error(LINKING_ERROR);
+  }
+  return undefined;
 })();
 
 export default module;
