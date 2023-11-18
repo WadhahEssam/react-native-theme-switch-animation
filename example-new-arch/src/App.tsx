@@ -41,8 +41,8 @@ export default function App() {
               type: 'inverted-circular',
               duration: 1000,
               startingPoint: {
-                cxRatio: 0.5,
-                cyRatio: 0,
+                cx: 200,
+                cy: -1,
               },
             },
           });

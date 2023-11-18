@@ -27,6 +27,7 @@
   ],
   "scripts": {
     "example": "yarn workspace react-native-theme-switch-animation-example",
+    "example-new-arch": "yarn workspace react-native-theme-switch-animation-example-new-arch",
     "test": "jest",
     "typecheck": "tsc --noEmit",
     "lint": "eslint \"**/*.{js,ts,tsx}\"",
@@ -83,7 +84,8 @@
     "react-native": "*"
   },
   "workspaces": [
-    "example"
+    "example",
+    "example-new-arch"
   ],
   "packageManager": "yarn@3.6.1",
   "jest": {
