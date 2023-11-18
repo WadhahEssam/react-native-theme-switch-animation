@@ -124,7 +124,7 @@ import switchTheme from 'react-native-theme-switch-animation';
 ```
 
 ## Trouble shooting
-# [iOS] Artifact for some components with border
+### [iOS] Artifact for some components with border
 
 https://github.com/WadhahEssam/react-native-theme-switch-animation/assets/24798045/8ad14c41-8757-4c21-b7e7-bf47b23e7f8b
 
