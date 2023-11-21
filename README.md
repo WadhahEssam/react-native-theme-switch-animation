@@ -51,7 +51,7 @@ project(':react-native-theme-switch-animation').projectDir = new File(rootProjec
 
 ```
 
-Update MainActivity.java:
+Update `MainActivity.java`:
 ```
 import com.themeswitchanimation.ThemeSwitchAnimationPackage;
 ```
