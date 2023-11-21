@@ -48,7 +48,6 @@ Update your `settings.gradle` file with:
 ```
 include ':react-native-theme-switch-animation'
 project(':react-native-theme-switch-animation').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-theme-switch-animation/android')
-
 ```
 
 Update `MainActivity.java`:
