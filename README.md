@@ -61,10 +61,6 @@ packages.add(new ThemeSwitchAnimationPackage());
 ```
 
 
-
-
-
-
 ## Usage
 
 ```js
