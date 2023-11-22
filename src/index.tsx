@@ -13,7 +13,6 @@ import {
 } from './helpers';
 import module from './module';
 
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('screen');
 const IS_SUPPORTED_PLATFORM =
   Platform.OS === 'android' || Platform.OS === 'ios';
 let ThemeSwitchAnimation: any = null;
@@ -67,7 +66,8 @@ const unfreezeWrapper = () => {
         const { cx, cy } = (
           localAnimationConfig as CircularAnimationConfigExact
         )?.startingPoint;
-
+        const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } =
+          Dimensions.get('screen');
         if (
           validateCoordinates(cx, SCREEN_WIDTH, 'cx') &&
           validateCoordinates(cy, SCREEN_HEIGHT, 'cy')
