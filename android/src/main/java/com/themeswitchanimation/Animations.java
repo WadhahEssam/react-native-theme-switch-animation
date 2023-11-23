@@ -89,17 +89,24 @@ public class Animations {
     });
   }
 
-  public static void performFadeAnimation(final ImageView overlay, long duration, Runnable callback) {
-    ObjectAnimator fadeOut = ObjectAnimator.ofFloat(overlay, "alpha", 1f, 0f);
-    fadeOut.setDuration(duration);
-    fadeOut.addListener(new AnimatorListenerAdapter() {
+  public static void performFadeAnimation(final FadingImageView overlay, long duration, Runnable callback) {
+    overlay.animateFading(overlay.getWidth() * 4, 0, 1000, new Runnable() {
       @Override
-      public void onAnimationEnd(Animator animation) {
-        super.onAnimationEnd(animation);
+      public void run() {
         overlay.setVisibility(View.GONE);
         callback.run();
       }
     });
-    fadeOut.start();
+//    ObjectAnimator fadeOut = ObjectAnimator.ofFloat(overlay, "alpha", 1f, 0f);
+//    fadeOut.setDuration(duration);
+//    fadeOut.addListener(new AnimatorListenerAdapter() {
+//      @Override
+//      public void onAnimationEnd(Animator animation) {
+//        super.onAnimationEnd(animation);
+//        overlay.setVisibility(View.GONE);
+//        callback.run();
+//      }
+//    });
+//    fadeOut.start();
   }
 }

@@ -38,7 +38,7 @@ export default function App() {
               setTheme(theme === 'light' ? 'dark' : 'light');
             },
             animationConfig: {
-              type: 'inverted-circular',
+              type: 'fade',
               duration: 1000,
               startingPoint: {
                 cxRatio: 0.5,

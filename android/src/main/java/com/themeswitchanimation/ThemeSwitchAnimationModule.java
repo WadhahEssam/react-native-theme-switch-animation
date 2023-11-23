@@ -2,6 +2,7 @@ package com.themeswitchanimation;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.RadialGradient;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -18,7 +19,7 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
 
   private ReactContext reactContext;
   private ViewGroup rootView;
-  private ImageView capturedImageView;
+  private FadingImageView capturedImageView;
   private Bitmap capturedImageBitmap;
   private boolean isAnimating = false;
 
@@ -34,6 +35,7 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
 
   @ReactMethod
   public void freezeScreen() {
+    System.out.println("Hello there");
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.rootView = (ViewGroup) getCurrentActivity().getWindow().getDecorView();
@@ -44,6 +46,20 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
         rootView.addView(capturedImageView, new ViewGroup.LayoutParams(
           ViewGroup.LayoutParams.MATCH_PARENT,
           ViewGroup.LayoutParams.MATCH_PARENT));
+//        capturedImageView.animateFading(capturedImageView.getWidth() / 2, 0, 1000);capturedImageView.animateFading(1, 0, 1000);
+
+
+        // remove the image from root view after 3 seconds
+//        new android.os.Handler().postDelayed(
+//          new Runnable() {
+//            public void run() {
+//              rootView.removeView(capturedImageView);
+//            }
+//          },
+//          3000
+//        );
+
+
         reactContext
           .getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
           .emit("FINISHED_FREEZING_SCREEN", null);
@@ -106,8 +122,8 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
     return capturedImageBitmap;
   }
 
-  public static ImageView createImageView(Bitmap capturedImageBitmap, ReactContext reactContext) {
-    ImageView capturedImageView = new ImageView(reactContext);
+  public static FadingImageView createImageView(Bitmap capturedImageBitmap, ReactContext reactContext) {
+    FadingImageView capturedImageView = new FadingImageView(reactContext);
     LinearLayout.LayoutParams fullScreenImageOverlayLP = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
     capturedImageView.setLayoutParams(fullScreenImageOverlayLP);
     capturedImageView.setImageBitmap(capturedImageBitmap);
