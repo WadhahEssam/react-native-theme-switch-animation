@@ -101,7 +101,7 @@ switchTheme({
 | `cxRatio` | `number` | Specifies starting percentage of x point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
 | `cyRatio` | `number` | Specifies starting percentage of y point for `circular` and `inverted-circular` animation (should be number between -1 and 1) |
 
-## Start Circular Animation from/to speceific Button
+## Start Circular Animation from/to specific Button
 If you would like the circular animation to start from/to a button/view on your ui automatically, you can do the following
 
 ```js
