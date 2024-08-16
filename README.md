@@ -92,6 +92,7 @@ switchTheme({
 | `type` | `fade` `circular` `inverted-circular` | Specifies animation type |
 | `duration` | `number` | Specifies duration in milliseconds |
 | `startingPoint` | `StartingPointConfig` | Configuration for the `circular` animation, where does the animation start in the screen |
+| `captureType` | `layer` or `hierarchy` | (iOS only) `layer` is the default and suitable for most cases, `hierarchy` is more complex and can cause flickering in (inverted-circular) animation, but it solves issue where some elements are not visible while animation is happening |
 
 ## startingPoint options
 | Name | Type | Description |

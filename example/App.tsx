@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Button,
   StyleSheet,
@@ -11,6 +11,13 @@ import switchTheme from 'react-native-theme-switch-animation';
 
 export default function App() {
   const [theme, setTheme] = React.useState<'light' | 'dark'>('light');
+
+  useEffect(() => {
+    // checking if the app is in new arch or not
+    // @ts-ignore
+    const uiManager = global?.nativeFabricUIManager ? 'Fabric' : 'Paper';
+    console.log(`Using ${uiManager}`);
+  }, []);
 
   return (
     <View

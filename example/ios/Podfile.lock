@@ -6,7 +6,7 @@ PODS:
   - EXJSONUtils (0.13.1)
   - EXManifests (0.14.3):
     - ExpoModulesCore
-  - Expo (51.0.28):
+  - Expo (51.0.11):
     - ExpoModulesCore
   - expo-dev-client (4.0.23):
     - EXManifests
@@ -223,7 +223,7 @@ PODS:
     - ExpoModulesCore
   - ExpoKeepAwake (13.0.2):
     - ExpoModulesCore
-  - ExpoModulesCore (1.12.21):
+  - ExpoModulesCore (1.12.14):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1659,7 +1659,7 @@ SPEC CHECKSUMS:
   EXConstants: 409690fbfd5afea964e5e9d6c4eb2c2b59222c59
   EXJSONUtils: 30c17fd9cc364d722c0946a550dfbf1be92ef6a4
   EXManifests: c1fab4c3237675e7b0299ea8df0bcb14baca4f42
-  Expo: a9897504e76db42c472778bc1eeef7895092f3fe
+  Expo: 8af2fbdfe35b232c2361cc9b9f09a5719ceb4635
   expo-dev-client: 924e474dc9eccf507260a22c5a8301bed0497453
   expo-dev-launcher: 684b06adeedbe07f3efacf5d6138642cda51681d
   expo-dev-menu: 68603f71158ca447abb567e302b492b743cdd8a2
@@ -1668,7 +1668,7 @@ SPEC CHECKSUMS:
   ExpoFileSystem: 80bfe850b1f9922c16905822ecbf97acd711dc51
   ExpoFont: e7f2275c10ca8573c991e007329ad6bf98086485
   ExpoKeepAwake: 3b8815d9dd1d419ee474df004021c69fdd316d08
-  ExpoModulesCore: ae1a4244021797374769ef44499fc4313d2ac676
+  ExpoModulesCore: d7b31b6d68b2ba815c46660d86018c789178fdb9
   EXUpdatesInterface: 996527fd7d1a5d271eb523258d603f8f92038f24
   FBLazyVector: ac12dc084d1c8ec4cc4d7b3cf1b0ebda6dab85af
   fmt: 4c2741a687cc09f0634a2e2c72a838b99f1ff120

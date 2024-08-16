@@ -1,6 +1,6 @@
 type CircularAnimationType = 'circular' | 'inverted-circular';
 
-export type CircularAnimationConfig = {
+type CircularAnimationConfig = {
   type: CircularAnimationType;
   duration: number;
   startingPoint: {
@@ -9,7 +9,7 @@ export type CircularAnimationConfig = {
   };
 };
 
-export type CircularAnimationConfigExact = {
+type CircularAnimationConfigExact = {
   type: CircularAnimationType;
   duration: number;
   startingPoint: {
@@ -18,17 +18,30 @@ export type CircularAnimationConfigExact = {
   };
 };
 
-export type FadeAnimationConfig = {
+type FadeAnimationConfig = {
   type: 'fade';
   duration: number;
 };
 
-export type AnimationConfig =
+type AnimationConfig = (
   | CircularAnimationConfig
   | FadeAnimationConfig
-  | CircularAnimationConfigExact;
+  | CircularAnimationConfigExact
+) & {
+  captureType?: 'layer' | 'hierarchy';
+};
 
-export type ThemeSwitcherHookProps = {
+interface ThemeSwitcherHookProps {
   switchThemeFunction: () => void;
   animationConfig?: AnimationConfig;
+}
+
+declare const switchTheme: (props: ThemeSwitcherHookProps) => void;
+
+export {
+  switchTheme,
+  ThemeSwitcherHookProps,
+  AnimationConfig,
+  CircularAnimationConfigExact,
+  CircularAnimationConfig,
 };

@@ -20,11 +20,12 @@ RCT_EXPORT_MODULE();
     return @[@"FINISHED_FREEZING_SCREEN"];
 }
 
-RCT_EXPORT_METHOD(freezeScreen)
+RCT_EXPORT_METHOD(freezeScreen: (NSString *)captureType)
 {
     if (!isAnimating) {
         dispatch_async(dispatch_get_main_queue(), ^{
             self->isAnimating = YES;
+            self->_captureType = captureType;
             [self captureAndDisplayScreen];
             [self triggerEvent];
         });
@@ -32,24 +33,24 @@ RCT_EXPORT_METHOD(freezeScreen)
 }
 
 + (BOOL)requiresMainQueueSetup {
-  return NO; // Return YES if you need to execute on the main thread
+    return NO; // Return YES if you need to execute on the main thread
 }
 
 - (void)startObserving
 {
-  hasListeners = YES;
+    hasListeners = YES;
 }
 
 - (void)stopObserving
 {
-  hasListeners = NO;
+    hasListeners = NO;
 }
 
 - (void)triggerEvent
 {
-  if (hasListeners) {
-      [self sendEventWithName:kFinishedFreezingScreenEvent body:@{@"key": @"value"}];
-  }
+    if (hasListeners) {
+        [self sendEventWithName:kFinishedFreezingScreenEvent body:@{@"key": @"value"}];
+    }
 }
 
 RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxRatio:(double)cxRatio cyRatio:(double)cyRatio)
@@ -83,24 +84,46 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxR
     overlayView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     overlayView.image = image;
     overlayView.contentMode = UIViewContentModeScaleAspectFill;
-    [[UIApplication sharedApplication].keyWindow addSubview:overlayView];
+    UIWindow *keyWindow = [UIApplication sharedApplication].windows.firstObject;
+    if (keyWindow) {
+        [keyWindow addSubview:overlayView];
+    }
 }
 
+// capture type can be either "layer" | "hierarchy"
 - (UIImage *)captureScreen {
-    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-    CGRect rect = [keyWindow bounds];
-    UIGraphicsBeginImageContextWithOptions(rect.size,YES,0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [keyWindow.layer renderInContext:context];
-    UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
-    UIGraphicsEndImageContext();
-    return capturedScreen;
+    if ([self->_captureType isEqualToString:@"hierarchy"]) {
+        CGSize screenSize = UIScreen.mainScreen.bounds.size;
+        UIGraphicsBeginImageContextWithOptions(screenSize, NO, 0.0f);
+        
+        // iterating over every window that the application might be using to ensure that layers like modals are captured
+        for (UIWindow *window in [UIApplication sharedApplication].windows) {
+            if (!window.isHidden && window.alpha > 0) {
+                [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+            }
+        }
+        
+        UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return capturedScreen;
+    } else {
+        UIWindow *keyWindow = [UIApplication sharedApplication].windows.firstObject;
+        CGRect rect = [keyWindow bounds];
+        UIGraphicsBeginImageContextWithOptions(rect.size, YES, 0.0f);
+        
+        CGContextRef context = UIGraphicsGetCurrentContext();
+        [keyWindow.layer renderInContext:context];
+        
+        UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        return capturedScreen;
+    }
 }
 
 // Don't compile this code when we build for the old architecture.
 #ifdef RCT_NEW_ARCH_ENABLED
 - (std::shared_ptr<facebook::react::TurboModule>)getTurboModule:
-    (const facebook::react::ObjCTurboModule::InitParams &)params
+(const facebook::react::ObjCTurboModule::InitParams &)params
 {
     return std::make_shared<facebook::react::NativeThemeSwitchAnimationModuleSpecJSI>(params);
 }

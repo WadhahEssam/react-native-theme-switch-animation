@@ -33,7 +33,7 @@ public class ThemeSwitchAnimationModule extends ThemeSwitchAnimationModuleSpec {
   }
 
   @ReactMethod
-  public void freezeScreen() {
+  public void freezeScreen(String captureType) {
     if (!this.isAnimating) {
       this.isAnimating = true;
       this.rootView = (ViewGroup) getCurrentActivity().getWindow().getDecorView();

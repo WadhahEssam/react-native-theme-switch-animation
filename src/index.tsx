@@ -4,7 +4,7 @@ import type {
   CircularAnimationConfig,
   CircularAnimationConfigExact,
   ThemeSwitcherHookProps,
-} from './types';
+} from './index.d';
 import ThemeSwitchAnimationListener from './ThemeSwitchAnimationListener';
 import {
   calculateActualRation,
@@ -16,7 +16,7 @@ import module from './module';
 const IS_SUPPORTED_PLATFORM =
   Platform.OS === 'android' || Platform.OS === 'ios';
 let ThemeSwitchAnimation: any = null;
-let switchFunction: () => void = () => { };
+let switchFunction: () => void = () => {};
 let localAnimationConfig: AnimationConfig = {
   type: 'fade',
   duration: 500,
@@ -45,7 +45,7 @@ const switchTheme = ({
 }: ThemeSwitcherHookProps) => {
   if (IS_SUPPORTED_PLATFORM) {
     localAnimationConfig = animationConfig || localAnimationConfig;
-    ThemeSwitchAnimation.freezeScreen();
+    ThemeSwitchAnimation.freezeScreen(animationConfig?.captureType || 'layer');
     switchFunction = incomingSwitchThemeFunction;
   } else {
     incomingSwitchThemeFunction();
