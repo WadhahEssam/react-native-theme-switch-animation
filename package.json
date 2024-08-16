@@ -27,10 +27,8 @@
   ],
   "scripts": {
     "example": "yarn workspace react-native-theme-switch-animation-example",
-    "example-new-arch": "yarn workspace react-native-theme-switch-animation-example-new-arch",
     "test": "jest",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint \"**/*.{js,ts,tsx}\"",
     "clean": "del-cli android/build example/android/build example/android/app/build example/ios/build lib",
     "prepare": "bob build",
     "release": "release-it"
@@ -79,17 +77,13 @@
     "react-native": "*"
   },
   "workspaces": [
-    "example",
-    "example-new-arch",
-    "expo-example"
+    "example"
   ],
   "packageManager": "yarn@3.6.1",
   "jest": {
     "preset": "react-native",
     "modulePathIgnorePatterns": [
-      "<rootDir>/example/node_modules",
-      "<rootDir>/expo-example/node_modules",
-      "<rootDir>/lib/"
+      "<rootDir>/example/node_modules"
     ]
   },
   "commitlint": {
