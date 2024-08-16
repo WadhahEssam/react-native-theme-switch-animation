@@ -1182,7 +1182,7 @@ PODS:
   - React-Mapbuffer (0.74.5):
     - glog
     - React-debug
-  - react-native-theme-switch-animation (0.6.0):
+  - react-native-theme-switch-animation (0.7.1):
     - DoubleConversion
     - glog
     - hermes-engine
@@ -1698,7 +1698,7 @@ SPEC CHECKSUMS:
   React-jsitracing: 3b6060bbf5317663667e1dd93560c7943ab86ccc
   React-logger: 257858bd55f3a4e1bc0cf07ddc8fb9faba6f8c7c
   React-Mapbuffer: 6c1cacdbf40b531f549eba249e531a7d0bfd8e7f
-  react-native-theme-switch-animation: d3eb50365a3829ce5572628888fa514752703f61
+  react-native-theme-switch-animation: 70b7c71ca08b488d00b9cf686d2b9961b13cf908
   React-nativeconfig: ba9a2e54e2f0882cf7882698825052793ed4c851
   React-NativeModulesApple: 8d11ff8955181540585c944cf48e9e7236952697
   React-perflogger: ed4e0c65781521e0424f2e5e40b40cc7879d737e
