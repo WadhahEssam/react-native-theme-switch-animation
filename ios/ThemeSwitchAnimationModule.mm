@@ -92,8 +92,6 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxR
 
 // capture type can be either "layer" | "hierarchy"
 - (UIImage *)captureScreen {
-    NSLog(@"captureType %@", self->_captureType);
-    
     if ([self->_captureType isEqualToString:@"hierarchy"]) {
         CGSize screenSize = UIScreen.mainScreen.bounds.size;
         UIGraphicsBeginImageContextWithOptions(screenSize, NO, 0.0f);
