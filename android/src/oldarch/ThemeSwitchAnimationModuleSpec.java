@@ -9,6 +9,6 @@ abstract class ThemeSwitchAnimationModuleSpec extends ReactContextBaseJavaModule
     super(context);
   }
   
-  public abstract void freezeScreen();
+  public abstract void freezeScreen(String captureType);
   public abstract void unfreezeScreen(String animationType, double duration, double cxRatio, double cyRatio);
 }

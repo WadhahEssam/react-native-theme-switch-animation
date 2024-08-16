@@ -3,7 +3,7 @@ import { TurboModuleRegistry } from 'react-native';
 import type { Double } from 'react-native/Libraries/Types/CodegenTypes';
 
 export interface Spec extends TurboModule {
-  freezeScreen(): void;
+  freezeScreen(captureType: string): void;
   unfreezeScreen(
     type: string,
     duration: Double,
