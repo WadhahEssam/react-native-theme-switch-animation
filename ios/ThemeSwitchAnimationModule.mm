@@ -80,7 +80,6 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxR
 }
 
 - (void)displayCapturedImageFullScreen:(UIImage *)image {
-    NSLog(@"here bere");
     overlayView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     overlayView.image = image;
     overlayView.contentMode = UIViewContentModeScaleAspectFill;
