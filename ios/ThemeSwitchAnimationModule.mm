@@ -87,13 +87,19 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxR
 }
 
 - (UIImage *)captureScreen {
-    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
-    CGRect rect = [keyWindow bounds];
-    UIGraphicsBeginImageContextWithOptions(rect.size,YES,0.0f);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    [keyWindow.layer renderInContext:context];
+    CGSize screenSize = UIScreen.mainScreen.bounds.size;
+    UIGraphicsBeginImageContextWithOptions(screenSize, NO, 0.0f);
+
+    // iterating over every window that the application might be using to ensure that layers like modals are captured
+    for (UIWindow *window in [UIApplication sharedApplication].windows) {
+        if (!window.isHidden && window.alpha > 0) {
+            [window drawViewHierarchyInRect:window.bounds afterScreenUpdates:YES];
+        }
+    }
+
     UIImage *capturedScreen = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
+
     return capturedScreen;
 }
 
