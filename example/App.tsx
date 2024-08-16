@@ -17,7 +17,7 @@ export default function App() {
     // @ts-ignore
     const uiManager = global?.nativeFabricUIManager ? 'Fabric' : 'Paper';
     console.log(`Using ${uiManager}`);
-  }, [])
+  }, []);
 
   return (
     <View
