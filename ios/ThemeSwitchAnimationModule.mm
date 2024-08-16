@@ -83,11 +83,14 @@ RCT_EXPORT_METHOD(unfreezeScreen: (NSString *)type duration:(double)duration cxR
     overlayView = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
     overlayView.image = image;
     overlayView.contentMode = UIViewContentModeScaleAspectFill;
-    [[UIApplication sharedApplication].keyWindow addSubview:overlayView];
+    UIWindow *keyWindow = [UIApplication sharedApplication].windows.firstObject;
+    if (keyWindow) {
+        [keyWindow addSubview:overlayView];
+    }
 }
 
 - (UIImage *)captureScreen {
-    UIWindow *keyWindow = [[UIApplication sharedApplication] keyWindow];
+    UIWindow *keyWindow = [UIApplication sharedApplication].windows.firstObject;
     CGRect rect = [keyWindow bounds];
     UIGraphicsBeginImageContextWithOptions(rect.size,YES,0.0f);
     CGContextRef context = UIGraphicsGetCurrentContext();

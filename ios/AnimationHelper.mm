@@ -86,7 +86,8 @@
         UIImageView *capturedImageViewAfterSwitching = [[UIImageView alloc] initWithFrame:[[UIScreen mainScreen] bounds]];
         capturedImageViewAfterSwitching.image = capturedImageAfterSwitching;
         capturedImageViewAfterSwitching.contentMode = UIViewContentModeScaleAspectFill;
-        [[UIApplication sharedApplication].keyWindow addSubview:capturedImageViewAfterSwitching];
+        UIWindow *keyWindow = [UIApplication sharedApplication].windows.firstObject;
+        [keyWindow addSubview:capturedImageViewAfterSwitching];
         overlayView.hidden = NO;
         
         CGFloat width = CGRectGetWidth(capturedImageViewAfterSwitching.bounds);
