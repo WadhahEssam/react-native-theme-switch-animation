@@ -16,7 +16,7 @@ import module from './module';
 const IS_SUPPORTED_PLATFORM =
   Platform.OS === 'android' || Platform.OS === 'ios';
 let ThemeSwitchAnimation: any = null;
-let switchFunction: () => void = () => {};
+let switchFunction: () => void = () => { };
 let localAnimationConfig: AnimationConfig = {
   type: 'fade',
   duration: 500,

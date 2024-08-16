@@ -1,0 +1,10 @@
+{
+  "extends": "expo/tsconfig.base",
+  "compilerOptions": {
+    "strict": true,
+    "paths": {
+      "react-native-theme-switch-animation": ["../src/index"],
+      "react-native-theme-switch-animation/*": ["../src/*"]
+    }
+  }
+}
