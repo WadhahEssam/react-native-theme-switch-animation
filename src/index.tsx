@@ -4,7 +4,7 @@ import type {
   CircularAnimationConfig,
   CircularAnimationConfigExact,
   ThemeSwitcherHookProps,
-} from './types';
+} from './index.d';
 import ThemeSwitchAnimationListener from './ThemeSwitchAnimationListener';
 import {
   calculateActualRation,
