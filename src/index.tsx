@@ -45,7 +45,7 @@ const switchTheme = ({
 }: ThemeSwitcherHookProps) => {
   if (IS_SUPPORTED_PLATFORM) {
     localAnimationConfig = animationConfig || localAnimationConfig;
-    ThemeSwitchAnimation.freezeScreen();
+    ThemeSwitchAnimation.freezeScreen(animationConfig?.captureType || 'layer');
     switchFunction = incomingSwitchThemeFunction;
   } else {
     incomingSwitchThemeFunction();

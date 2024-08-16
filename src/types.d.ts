@@ -24,9 +24,11 @@ export type FadeAnimationConfig = {
 };
 
 export type AnimationConfig =
-  | CircularAnimationConfig
+  (| CircularAnimationConfig
   | FadeAnimationConfig
-  | CircularAnimationConfigExact;
+  | CircularAnimationConfigExact) & {
+    captureType?: 'layer' | 'hierarchy';
+  };
 
 export type ThemeSwitcherHookProps = {
   switchThemeFunction: () => void;
